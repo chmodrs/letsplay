@@ -47,3 +47,13 @@
 - name: Build node v1 image
   shell: source '{{ git_repo_dst }}/node/buildimage.sh'
 
+- name: create letsplay network
+  docker_network:
+    name: letsplay
+    driver: overlay
+
+- name: create traefik network
+  docker_network:
+    name: traefik
+    driver: overlay
+
