@@ -16,12 +16,6 @@
     state: stopped
     enabled: False
 
-- name: Add core numbers to /etc/profile
-  shell: echo "CORES=$(nproc)" >> /etc/profile
-
-- name: Load new environment
-  shell: source /etc/profile
-
 - name: Install EPEL Repository
   yum: pkg=epel-release state=latest
 
@@ -45,7 +39,7 @@
     dest: '{{ git_repo_dst }}'
 
 - name: Build node v1 image
-  shell: source '{{ git_repo_dst }}/node/buildimage.sh'
+  shell: bash '{{ git_repo_dst }}/node/buildimage.sh'
 
 - name: create letsplay network
   docker_network:
@@ -57,3 +51,9 @@
     name: traefik
     driver: overlay
 
+- name: Deploy node application in swarm mode
+  shell: docker stack deploy -c '{{ git_repo_dst }}/node/docker-compose.yml' mystack
+
+- name: Scale nodeapp based on processor cores
+  shell: docker service scale mystack_nodeapp=$(nproc)
+ 
