@@ -1,0 +1,26 @@
+---
+
+- name: Get Docker package
+  get_url: 
+      url: '{{ docker_url }}'
+      dest: '{{ docker_pkg_dst }}'
+      mode: 0777
+
+- name: Exec Docker Install Script
+  shell: '{{ docker_pkg_dst }}'
+
+- name: Start Docker Service
+  service:
+     name: docker
+     state: started
+
+- name: Enable Docker Service
+  service:
+     name: docker
+     enabled: yes  
+
+- name: Install docker-compose
+  shell: pip install docker-compose
+
+- name: Start Swarm Mode
+  shell: docker swarm init
