@@ -11,4 +11,4 @@ services:
       - "3000:3000"
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: "${CORES}"
