@@ -16,7 +16,11 @@ services:
        start_period: 50s
     deploy:
       mode: replicated
+      update_config:
+         parallelism: 1
+         delay: 10s
       replicas: 1
+      restart_policy: on-failure
 
 networks:
    letsplay:
