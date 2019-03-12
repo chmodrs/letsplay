@@ -1,0 +1,6 @@
+FROM node:10.15-slim
+WORKDIR /app
+COPY server.js /app
+CMD node server.js
+EXPOSE 3000
+
