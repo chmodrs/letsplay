@@ -1,0 +1,49 @@
+---
+# tasks file for letsplay
+
+- name: Put SELINUX in permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Disable SELINUX
+  selinux:
+    state: disabled
+
+- name: Stop and disable firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: False
+
+- name: Add core numbers to /etc/profile
+  shell: echo "CORES=$(nproc)" >> /etc/profile
+
+- name: Load new environment
+  shell: source /etc/profile
+
+- name: Install EPEL Repository
+  yum: pkg=epel-release state=latest
+
+- name: Install pip/git packages
+  yum:
+    name:
+     - python-pip
+     - git
+
+- name: Upgrade System Packages
+  yum: name=* state=latest
+
+
+- import_tasks: install_docker.yml
+
+
+- name: Clone project repo
+  git:
+    repo: '{{ git_repo }}' 
+    clone: yes
+    dest: '{{ git_repo_dst }}'
+
+- name: Build node v1 image
+  shell: source '{{ git_repo_dst }}/node/buildimage.sh'
+
