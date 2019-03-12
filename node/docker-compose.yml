@@ -1,14 +1,28 @@
-version: "3.6"
+version: "3.7"
 
 services:
 
   nodeapp:
-    environment:
-    image: nodeapp:1
+    image: nodeapp:v1
     networks:
       - letsplay
     ports:
       - "3000:3000"
+    healthcheck:
+       test: ["CMD", "curl", "-f", "http://localhost:3000"]
+       interval: 30s
+       timeout: 20s
+       retries: 3
+       start_period: 50s
     deploy:
       mode: replicated
-      replicas: "${CORES}"
+      replicas: 1
+
+networks:
+   letsplay:
+      driver: overlay
+      external: true
+
+   traefik:
+      driver: overlay
+      external: true
