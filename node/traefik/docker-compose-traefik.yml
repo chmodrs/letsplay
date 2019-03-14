@@ -15,6 +15,7 @@ services:
       - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/log:/var/log/
     configs:
       - source: traefik-config
         target: /etc/traefik/traefik.toml

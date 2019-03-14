@@ -1,6 +1,10 @@
 logLevel="DEBUG"
 debug=true
 
+[accessLog]
+  filePath = "/var/log/access.log"
+  format = "json"
+
 [web]
 address=":8080"
 
