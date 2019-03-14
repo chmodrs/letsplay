@@ -1,0 +1,7 @@
+---
+# defaults file for letsplay
+
+docker_url: https://get.docker.com
+docker_pkg_dst: /tmp/docker-install.sh
+git_repo: https://github.com/chmodrs/letsplay.git
+git_repo_dst: /opt/letsplay

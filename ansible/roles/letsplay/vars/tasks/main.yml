@@ -1,0 +1,59 @@
+---
+# tasks file for letsplay
+
+- name: Put SELINUX in permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Disable SELINUX
+  selinux:
+    state: disabled
+
+- name: Stop and disable firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: False
+
+- name: Install EPEL Repository
+  yum: pkg=epel-release state=latest
+
+- name: Install pip/git packages
+  yum:
+    name:
+     - python-pip
+     - git
+
+- name: Upgrade System Packages
+  yum: name=* state=latest
+
+
+- import_tasks: install_docker.yml
+
+
+- name: Clone project repo
+  git:
+    repo: '{{ git_repo }}' 
+    clone: yes
+    dest: '{{ git_repo_dst }}'
+
+- name: Build node v1 image
+  shell: bash '{{ git_repo_dst }}/node/buildimage.sh'
+
+- name: create letsplay network
+  docker_network:
+    name: letsplay
+    driver: overlay
+
+- name: create traefik network
+  docker_network:
+    name: traefik
+    driver: overlay
+
+- name: Deploy node application in swarm mode
+  shell: docker stack deploy -c '{{ git_repo_dst }}/node/docker-compose.yml' mystack
+
+- name: Scale nodeapp based on processor cores
+  shell: docker service scale mystack_nodeapp=$(nproc)
+ 
