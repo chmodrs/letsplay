@@ -39,3 +39,45 @@ Também configuramos um scaling da aplicação node com base na quantidade de nu
 
 A monitoração do processo node e do proxy reverso é feita através da diretiva restart_policy.on-failure no docker-compose de cada aplicação, dessa forma quando o healtheck não retornar OK, o container irá ser reiniciado automaticamente.
 
+Para validar o rollback, vamos testá-lo conforme abaixo:
+
+```
+# docker build -t nodeapp:v2 -f DockerfileRollback .
+Sending build context to Docker daemon  11.99MB
+Step 1/5 : FROM node:10.15-slim
+ ---> 94f5c7b8aa6a
+Step 2/5 : WORKDIR /app
+ ---> Using cache
+ ---> 0f54f59c559d
+Step 3/5 : COPY server.js /app
+ ---> Using cache
+ ---> a5027f7e65ee
+Step 4/5 : CMD node server.js
+ ---> Using cache
+ ---> a69c5ffafe51
+Step 5/5 : EXPOSE 3000
+ ---> Using cache
+ ---> 4f4b77b113cb
+Successfully built 4f4b77b113cb
+Successfully tagged nodeapp:v2
+```
+
+E atualizando o serviço
+
+```
+# docker service update mystack_nodeapp --image nodeapp:v2
+
+mystack_nodeapp
+overall progress: 0 out of 2 tasks 
+1/2: starting  [============================================>      ] 
+2/2:   
+service rolled back: rollback completed
+```
+
+E podemos ver que imagem que está rodando permanece a v1
+
+```
+# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
+u7qr8d33bwok        mystack_nodeapp     replicated          2/2                 nodeapp:v1                        *:3000->3000/tcp
+```
