@@ -6,6 +6,7 @@ services:
     image: nodeapp:v1
     networks:
       - letsplay
+      - traefik
     ports:
       - "3000:3000"
     healthcheck:
@@ -20,7 +21,7 @@ services:
       labels:
          - traefik.frontend.rule=Host:node.local
          - traefik.docker.network=traefik
-         - traefik.port=80
+         - traefik.port=3000
          - traefik.enable=true
       update_config:
          parallelism: 1
