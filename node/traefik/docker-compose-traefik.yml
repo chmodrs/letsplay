@@ -2,7 +2,12 @@ version: "3.3"
 
 services:
   traefik:
-    image: traefik:1.4
+    image: chmodrs/traefik:1.7-alpine-curl
+    healthcheck:
+       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+       interval: 30s
+       timeout: 20s
+       retries: 3
     ports:
       - 80:80
       - 8080:8080
@@ -17,6 +22,11 @@ services:
       placement:
         constraints:
           - node.role == manager
+      restart_policy:
+         condition: on-failure
+         delay: 5s
+         max_attempts: 2
+         window: 30s
 
 networks:
   traefik:
