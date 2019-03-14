@@ -25,4 +25,17 @@ cat << EOF >> /etc/ansible/hosts
 EOF
 ```
 
+Execute o playbook conforme usuário/senha ou chave ssh do servidor de destino, no meu caso meu servidor de destino é acessado por chave.
+
+```
+ansible-playbook /etc/ansible/roles/letsplay/site.yml -u myuser --private-key=/tmp/keyfile.pem
+```
+
+Após concluir o deploy da instância de destino, a aplicação node estará acessível através de um proxy reverso (traefik) na porta 80.
+
+Em nosso docker-compose.yml definimos uma política de deployment e rollback seguro, onde a diretiva update_config e rollback_config irá fazer o rollback da imagem caso no deploy da nova imagem o healthcheck não esteja retornando corretamente.
+
+Também configuramos um scaling da aplicação node com base na quantidade de nucleos de processadores da máquina destino.
+
+A monitoração do processo node e do proxy reverso é feita através da diretiva restart_policy.on-failure no docker-compose de cada aplicação, dessa forma quando o healtheck não retornar OK, o container irá ser reiniciado automaticamente.
 
