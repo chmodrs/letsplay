@@ -56,7 +56,4 @@
 
 - name: Scale nodeapp based on processor cores
   shell: docker service scale mystack_nodeapp=$(nproc)
-
-- name: Deploy traefik stack in swarm mode
-  shell: docker stack deploy -c '{{ git_repo_dst }}/node/traefik/docker-compose-traefik.yml' traefik
  
