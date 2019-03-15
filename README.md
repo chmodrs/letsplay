@@ -4,7 +4,7 @@
 
 Nesse howto, vamos levar em consideração que você já está com o ansible instalado seu diretório padrão das roles fica em /etc/ansible/roles
 
-Faça o clone do repositório
+Faça o clone do repositório em /opt (caso salve em outro diretório, alterar a variável DIR em buildimage.sh)
 
 ```
 git clone https://github.com/chmodrs/letsplay.git
