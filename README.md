@@ -2,7 +2,7 @@
 
 **Deploy do ambiente utilizando o gerenciador de configuração Ansible na versão 2.7.8 em Sistema Operacional CENTOS 7.**
 
-Nesse howto, vamos definir que você já está com o ansible instalado seu diretório padrão das roles fica em /etc/ansible/roles
+Nesse howto, vamos levar em consideração que você já está com o ansible instalado seu diretório padrão das roles fica em /etc/ansible/roles
 
 Faça o clone do repositório
 
