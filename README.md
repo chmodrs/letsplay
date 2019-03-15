@@ -7,7 +7,7 @@ Nesse howto, vamos levar em consideração que você já está com o ansible ins
 Faça o clone do repositório em /opt (caso salve em outro diretório, alterar a variável DIR em buildimage.sh)
 
 ```
-git clone https://github.com/chmodrs/letsplay.git /opt/letsplay/
+git clone https://github.com/chmodrs/letsplay.git /opt/letsplay
 ```
 
 Acesse o diretório e copie a pasta ansible/roles/letsplay para a pasta roles da sua máquina
